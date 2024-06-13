@@ -3,11 +3,13 @@ package com.aluracursos.LiterAlura.repository;
 import com.aluracursos.LiterAlura.model.Libros;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface LibrosRepository extends JpaRepository<Libros, Long> {
-
     Optional<Libros> findByTituloContainsIgnoreCase(String nombreLibro);
+
 
 }

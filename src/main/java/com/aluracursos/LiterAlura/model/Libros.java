@@ -1,31 +1,36 @@
 package com.aluracursos.LiterAlura.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jdk.jfr.Category;
+
+import java.util.List;
 
 @Entity
 public class Libros {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
+    @Column(unique = true)
     private String titulo;
-    private String autores;
-    private String idiomas;
+    private String autor;
+    @Enumerated(EnumType.STRING)
+    private Idiomas idiomas;
     private Integer descargas;
+    @OneToOne(mappedBy = "libros", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Autores> autores;
+
 
     public Libros(){}
 
     public Libros(DatosLibros datosLibros){
         this.titulo = datosLibros.titulo();
-        this.autores = datosLibros.autores();
-        this.idiomas = datosLibros.idiomas();
+        this.autor = datosLibros.autores();
+        this.idiomas = Idiomas.fromString(datosLibros.idiomas().split(",")[0].trim());
         this.descargas = datosLibros.descargas();
     }
 
-
+//Getters & Setters
 
 
     public Long getId() {
@@ -44,19 +49,19 @@ public class Libros {
         this.titulo = titulo;
     }
 
-    public String getAutores() {
-        return autores;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setAutores(String autores) {
-        this.autores = autores;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
-    public String getIdiomas() {
+    public Idiomas getIdiomas() {
         return idiomas;
     }
 
-    public void setIdiomas(String idiomas) {
+    public void setIdiomas(Idiomas idiomas) {
         this.idiomas = idiomas;
     }
 
@@ -66,6 +71,14 @@ public class Libros {
 
     public void setDescargas(Integer descargas) {
         this.descargas = descargas;
+    }
+
+    public List<Autores> getAutores() {
+        return autores;
+    }
+
+    public void setAutores(List<Autores> autores) {
+        this.autores = autores;
     }
 }
 
