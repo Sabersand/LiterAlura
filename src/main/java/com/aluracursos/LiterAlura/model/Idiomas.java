@@ -2,7 +2,7 @@ package com.aluracursos.LiterAlura.model;
 
 
 public enum Idiomas {
-    ACCION("Action", "Acción"),
+    INGLES("EN", "INGLES"),
     ROMANCE("Romance", "Romance"),
     COMEDIA("Comedy", "Comedia"),
     DRAMA("Drama", "Drama"),

@@ -6,19 +6,20 @@ import com.aluracursos.LiterAlura.repository.LibrosRepository;
 import com.aluracursos.LiterAlura.service.ConsumoApi;
 import com.aluracursos.LiterAlura.service.ConvierteApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Component
 public class Principal {
     private final Scanner teclado = new Scanner(System.in);
-    private final ConsumoApi consumoApi = new ConsumoApi();
-    private final ConvierteApi conversor = new ConvierteApi();
-    private final String URL_BASE = "http://gutendex.com/books";
+    private ConsumoApi consumoApi = new ConsumoApi();
+    private ConvierteApi conversor = new ConvierteApi();
+    private String URL_BASE = "http://gutendex.com/books";
     private List<DatosLibros> datosLibros = new ArrayList<>();
     private List<Libros> libros;
-
 
     @Autowired
     private LibrosRepository repositorio;
@@ -86,7 +87,8 @@ public class Principal {
     private DatosLibros getDatosLibros() {
         System.out.println("Escribe el nombre del libro que deseas buscar");
         var nombreLibro = teclado.nextLine();
-        var json = consumoApi.obtenerDatos(URL_BASE + "?search=" + nombreLibro.replace(" ", "+").toLowerCase());
+        System.out.println(URL_BASE + "?search=" + nombreLibro.replace(" ", "%20"));
+        var json = consumoApi.obtenerDatos(URL_BASE + "?search=" + nombreLibro.replace(" ", "%20"));
         System.out.println(json);
         DatosLibros datos = conversor.obtenerDatos(json, DatosLibros.class);
         return datos;

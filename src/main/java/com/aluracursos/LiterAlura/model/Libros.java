@@ -3,34 +3,50 @@ package com.aluracursos.LiterAlura.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 import jdk.jfr.Category;
-
 import java.util.List;
 
+
 @Entity
+@Table(name = "libros")
 public class Libros {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @Column(unique = true)
     private String titulo;
-    private String autor;
+    private List<String> autor;
     @Enumerated(EnumType.STRING)
-    private Idiomas idiomas;
+    private List<Idiomas> idiomas;
     private Integer descargas;
-    @OneToOne(mappedBy = "libros", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Autores> autores;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
+    private Autores autores;
 
 
-    public Libros(){}
+    public Libros() {
+    }
 
-    public Libros(DatosLibros datosLibros){
+    public Libros(DatosLibros datosLibros) {
         this.titulo = datosLibros.titulo();
         this.autor = datosLibros.autores();
-        this.idiomas = Idiomas.fromString(datosLibros.idiomas().split(",")[0].trim());
+        this.idiomas = datosLibros.idiomas();
         this.descargas = datosLibros.descargas();
     }
 
-//Getters & Setters
+    @Override
+    public String toString() {
+        return "Libros{" +
+                "Id=" + Id +
+                ", titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", idiomas=" + idiomas +
+                ", descargas=" + descargas +
+                ", autores=" + autores +
+                '}';
+    }
+
+
+    //Getters & Setters
 
 
     public Long getId() {
@@ -49,11 +65,11 @@ public class Libros {
         this.titulo = titulo;
     }
 
-    public String getAutor() {
+    public List<String> getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(List<String> autor) {
         this.autor = autor;
     }
 
@@ -73,15 +89,13 @@ public class Libros {
         this.descargas = descargas;
     }
 
-    public List<Autores> getAutores() {
+    public Autores getAutores() {
         return autores;
     }
 
-    public void setAutores(List<Autores> autores) {
+    public void setAutores(Autores autores) {
         this.autores = autores;
     }
 }
-
-
 
 

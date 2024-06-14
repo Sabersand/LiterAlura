@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LiterAluraApplication implements CommandLineRunner {
 
 	@Autowired
+	private Principal principal;
+
+	@Autowired
 	private LibrosRepository repository;
 
 	public static void main(String[] args) {
