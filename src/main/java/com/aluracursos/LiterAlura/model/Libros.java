@@ -1,60 +1,58 @@
 package com.aluracursos.LiterAlura.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
-import jdk.jfr.Category;
-import java.util.List;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "libros")
 public class Libros {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
+
     @Column(unique = true)
     private String titulo;
-    private List<String> autor;
-    @Enumerated(EnumType.STRING)
-    private List<Idiomas> idiomas;
-    private Integer descargas;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor_id")
-    private Autores autores;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> idiomas;
 
+    private Double descargas;
+    private String nombreAutor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "autor_id")
+    private Autor autor;
 
     public Libros() {
     }
-
-    public Libros(DatosLibros datosLibros) {
-        this.titulo = datosLibros.titulo();
-        this.autor = datosLibros.autores();
-        this.idiomas = datosLibros.idiomas();
-        this.descargas = datosLibros.descargas();
+    public Libros(DatosLibros datosLibro, Autor autor) {
+        this.titulo = datosLibro.titulo();
+        this.nombreAutor = datosLibro.autor().stream().map(DatosAutor::nombre).collect(Collectors.toList()).toString();
+        this.idiomas = datosLibro.idiomas();
+        this.descargas = datosLibro.totalDescargas();
+        this.autor = autor;
     }
 
     @Override
     public String toString() {
-        return "Libros{" +
-                "Id=" + Id +
-                ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", idiomas=" + idiomas +
-                ", descargas=" + descargas +
-                ", autores=" + autores +
-                '}';
+        return "------------LIBRO-----------\n"+
+                "Titulo: "+ titulo + '\n' +
+                "Autor: " + nombreAutor + '\n' +
+                "Idiomas: " + idiomas + '\n' +
+                "Descargas: " + descargas +'\n' +
+                "----------------------------" +'\n';
     }
 
-
-    //Getters & Setters
-
-
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -65,37 +63,38 @@ public class Libros {
         this.titulo = titulo;
     }
 
-    public List<String> getAutor() {
-        return autor;
-    }
-
-    public void setAutor(List<String> autor) {
-        this.autor = autor;
-    }
-
-    public Idiomas getIdiomas() {
+    public List<String> getIdiomas() {
         return idiomas;
     }
 
-    public void setIdiomas(Idiomas idiomas) {
+    public void setIdiomas(List<String> idiomas) {
         this.idiomas = idiomas;
     }
 
-    public Integer getDescargas() {
+    public String getNombreAutor() {
+        return nombreAutor;
+    }
+
+    public void setNombreAutor(String nombreAutor) {
+        this.nombreAutor = nombreAutor;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+        if (autor != null && !autor.getLibros().contains(this)) {
+            autor.getLibros().add(this);
+        }
+    }
+
+    public Double getDescargas() {
         return descargas;
     }
 
-    public void setDescargas(Integer descargas) {
+    public void setDescargas(Double descargas) {
         this.descargas = descargas;
     }
-
-    public Autores getAutores() {
-        return autores;
-    }
-
-    public void setAutores(Autores autores) {
-        this.autores = autores;
-    }
 }
-
-
