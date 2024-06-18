@@ -2,10 +2,8 @@ package com.aluracursos.LiterAlura.model;
 
 import jakarta.persistence.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Entity
 @Table(name = "libros")
@@ -19,10 +17,7 @@ public class Libros {
     private String titulo;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> idiomas;
-
     private Double descargas;
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "autor_id")
     private Autor autor;
@@ -31,7 +26,6 @@ public class Libros {
     }
     public Libros(DatosLibros datosLibro, Autor autor) {
         this.titulo = datosLibro.titulo();
-
         this.idiomas = datosLibro.idiomas();
         this.descargas = datosLibro.totalDescargas();
         this.autor = autor;
@@ -41,7 +35,6 @@ public class Libros {
     public String toString() {
         return "------------LIBRO-----------\n"+
                 "Titulo: "+ titulo + '\n' +
-
                 "Idiomas: " + idiomas + '\n' +
                 "Descargas: " + descargas +'\n' +
                 "----------------------------" +'\n';
@@ -70,8 +63,6 @@ public class Libros {
     public void setIdiomas(List<String> idiomas) {
         this.idiomas = idiomas;
     }
-
-
 
     public Autor getAutor() {
         return autor;

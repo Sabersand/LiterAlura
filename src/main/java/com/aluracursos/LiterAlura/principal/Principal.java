@@ -6,7 +6,7 @@ import com.aluracursos.LiterAlura.model.*;
 import com.aluracursos.LiterAlura.repository.AutorRepository;
 import com.aluracursos.LiterAlura.repository.LibrosRepository;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class Principal {
 
@@ -54,11 +54,11 @@ public class Principal {
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
-                    System.out.println("Hasta pronto");
+                    System.out.println("Muchas gracias por usar Literalura!");
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Opción inválida");
+                    System.out.println("Opción no válida, por favor ingresa otra opción del menú");
             }
         }
     }
@@ -189,6 +189,9 @@ public class Principal {
                         
                     0 - Salir
                     -----------------------------------------
+                    
+                    
+                    Por favor, ingrese una de las opciones listadas:
                     """;
         System.out.println(menu);
     }
