@@ -21,7 +21,7 @@ public class Libros {
     private List<String> idiomas;
 
     private Double descargas;
-    private String nombreAutor;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "autor_id")
@@ -31,7 +31,7 @@ public class Libros {
     }
     public Libros(DatosLibros datosLibro, Autor autor) {
         this.titulo = datosLibro.titulo();
-        this.nombreAutor = datosLibro.autor().stream().map(DatosAutor::nombre).collect(Collectors.toList()).toString();
+
         this.idiomas = datosLibro.idiomas();
         this.descargas = datosLibro.totalDescargas();
         this.autor = autor;
@@ -41,7 +41,7 @@ public class Libros {
     public String toString() {
         return "------------LIBRO-----------\n"+
                 "Titulo: "+ titulo + '\n' +
-                "Autor: " + nombreAutor + '\n' +
+
                 "Idiomas: " + idiomas + '\n' +
                 "Descargas: " + descargas +'\n' +
                 "----------------------------" +'\n';
@@ -71,13 +71,7 @@ public class Libros {
         this.idiomas = idiomas;
     }
 
-    public String getNombreAutor() {
-        return nombreAutor;
-    }
 
-    public void setNombreAutor(String nombreAutor) {
-        this.nombreAutor = nombreAutor;
-    }
 
     public Autor getAutor() {
         return autor;
